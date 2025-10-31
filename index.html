@@ -1,113 +1,60 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>Famous2U — Access Fame. Build Connection.</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Famous2U connects fans and creators — helping people access fame and build real connections.">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Famous2U connects fans with creators — access fame, build real connection, and grow your influence." />
   <style>
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      background: #0f172a;
-      color: #f8fafc;
-      line-height: 1.6;
+    :root{
+      --ink:#0b1020; --bg:#080b14; --text:#e5e7eb; --muted:#94a3b8;
+      --brand:#60a5fa; --brand2:#22d3ee; --card:#0e152b; --border:#1f2a44;
+      --radius:14px;
     }
-    header {
-      padding: 20px;
-      text-align: center;
-      background: #111827;
-      border-bottom: 1px solid #1e293b;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 1.8rem;
-      color: #60a5fa;
-      letter-spacing: 0.5px;
-    }
-    main {
-      text-align: center;
-      padding: 80px 20px;
-    }
-    main h2 {
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
-    main p {
-      color: #94a3b8;
-      max-width: 600px;
-      margin: 0 auto 30px;
-    }
-    form {
-      margin: 0 auto;
-      max-width: 400px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      align-items: center;
-    }
-    input[type="email"] {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      background: #1e293b;
-      color: #f8fafc;
-      font-size: 1rem;
-    }
-    input[type="email"]::placeholder {
-      color: #94a3b8;
-    }
-    button {
-      background: #60a5fa;
-      color: #0f172a;
-      font-weight: 600;
-      padding: 12px 22px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    button:hover {
-      background: #3b82f6;
-    }
-    footer {
-      text-align: center;
-      padding: 30px 10px;
-      font-size: 0.9rem;
-      color: #64748b;
-      border-top: 1px solid #1e293b;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>Famous2U</h1>
-  </header>
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial; color:var(--text); background: radial-gradient(1200px 800px at 80% -10%, #1a2746 0%, transparent 60%) no-repeat var(--bg); line-height:1.6}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1100px;margin:0 auto;padding:20px}
 
-  <main>
-    <h2>Access Fame. Build Connection.</h2>
-    <p>
-      Famous2U connects aspiring individuals with influencers, creators, and icons.
-      Fans get closer to the people who inspire them — and creators grow their influence
-      through authentic, meaningful connections.
-    </p>
+    /* header */
+    header{position:sticky;top:0;background:linear-gradient(180deg, rgba(8,11,20,.9), rgba(8,11,20,.6) 70%, transparent); backdrop-filter: blur(6px); border-bottom:1px solid rgba(255,255,255,.04)}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+    .badge{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand2)); box-shadow:0 6px 18px rgba(34,211,238,.35)}
+    .links{display:flex;gap:14px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:8px;border:1px solid transparent;border-radius:10px;padding:10px 14px;font-weight:600}
+    .btn-outline{border-color:#263249;background:rgba(255,255,255,.02);color:#cbd5e1}
+    .btn-primary{background:var(--brand);color:var(--ink)}
+    .btn:hover{filter:brightness(1.05)}
 
-    <!-- Email signup form -->
-    <form action="https://formspree.io/f/mgvpnqnb" method="POST">
-      <!-- Replace the action above with your actual Formspree endpoint -->
-      <input type="email" name="email" placeholder="Enter your email to join early access" required>
-      <button type="submit">Join the Movement</button>
-    </form>
+    /* hero */
+    .hero{padding:80px 20px 32px}
+    .grid-hero{display:grid;grid-template-columns:1.15fr 1fr;gap:28px;align-items:center}
+    .kicker{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#93c5fd;margin:0 0 6px}
+    h1{margin:.2rem 0;font-size: clamp(32px, 5vw, 54px); line-height:1.1; letter-spacing:-.02em}
+    .sub{color:var(--muted); margin:10px 0 18px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02)); border:1px solid var(--border); border-radius:var(--radius); padding:18px; box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    .mock{min-height:220px; display:grid; gap:12px}
+    .bar{height:12px;background:#1f2a44;border-radius:8px}
+    .pill{height:34px;background:#142045;border:1px solid #22325a;border-radius:10px}
+    .cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
 
-    <p style="margin-top:10px; color:#94a3b8; font-size:0.9rem;">
-      or email us directly at
-      <a href="mailto:teamf2u@proton.me" style="color:#60a5fa;">teamf2u@proton.me</a>
-    </p>
-  </main>
+    /* features */
+    .section{padding:28px 20px}
+    .grid{display:grid;gap:14px;grid-template-columns:repeat(3,1fr)}
+    .muted{color:var(--muted)}
+    h3{margin:.2rem 0}
 
-  <footer>
-    © 2025 Famous2U — All rights reserved.
-  </footer>
-</body>
-</html>
+    /* split audience */
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .list{margin:0;padding-left:18px}
+    .list li{margin:.25rem 0}
+
+    /* footer */
+    footer{border-top:1px solid var(--border);color:#8aa0c3;padding:36px 20px;text-align:center}
+
+    @media (max-width: 900px){
+      .grid-hero{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+      .spl
