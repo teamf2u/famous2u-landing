@@ -47,8 +47,21 @@
     h1{margin:.2rem 0;font-size: clamp(32px, 5vw, 54px); line-height:1.1; letter-spacing:-.02em}
     .sub{color:var(--muted); margin:10px 0 18px}
     .card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02)); border:1px solid var(--border); border-radius:var(--radius); padding:18px; box-shadow:0 10px 30px rgba(0,0,0,.35)}
-    .mock{min-height:220px; display:grid; gap:12px}
     .cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+
+    /* fade animation for mock card */
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .mock {
+      min-height:220px;
+      display:grid;
+      gap:12px;
+      opacity:0;
+      animation: fadeSlideIn 1s ease-out forwards;
+      animation-delay: 0.4s;
+    }
 
     /* features */
     .section{padding:28px 20px}
@@ -109,7 +122,7 @@
         </div>
       </div>
 
-      <!-- REPLACED MOCK WITH REAL CONTENT -->
+      <!-- HOW IT WORKS CARD WITH FADE/SLIDE -->
       <div class="card mock">
         <h3 style="margin-top:0;color:#60a5fa;">How It Works</h3>
         <p style="color:#cbd5e1;font-size:1rem;line-height:1.5;margin-top:6px;">
@@ -121,7 +134,7 @@
           Your connection starts here.
         </p>
       </div>
-      <!-- /REPLACED -->
+      <!-- /HOW IT WORKS -->
     </div>
   </section>
 
