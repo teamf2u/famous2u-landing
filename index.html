@@ -82,13 +82,13 @@
         <h1>Access Fame. Build Connection.</h1>
         <p class="sub">Famous2U brings fans closer to creators — and gives creators simple tools to deepen relationships and grow influence.</p>
 
-        <!-- Email signup (replace YOUR_FORMSPREE_ID) -->
-        <form id="signup" class="card" action="https://formspree.io/f/mgvpnqnb" method="POST" onsubmit="return false" aria-label="Early access">
+        <!-- Email signup (live Formspree endpoint) -->
+        <form id="signup" class="card" action="https://formspree.io/f/mgvpnqnb" method="POST" aria-label="Early access">
           <label for="email" class="muted" style="font-size:14px;">Join the waitlist</label>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
             <input id="email" name="email" type="email" required placeholder="you@example.com"
               style="flex:1 1 240px;padding:12px 14px;border:1px solid #24304d;border-radius:10px;background:#0b1328;color:#e5e7eb;">
-            <button class="btn btn-primary" id="join">Join the Movement</button>
+            <button type="submit" class="btn btn-primary" id="join">Join the Movement</button>
           </div>
           <p id="msg" class="muted" style="font-size:12px;margin:8px 0 0">No spam. Unsubscribe anytime.</p>
         </form>
@@ -161,20 +161,42 @@
 </footer>
 
 <script>
-  // niceties: current year + inline success message (keeps things friendly without autoresponder)
+  // Current year
   document.getElementById('year').textContent = new Date().getFullYear();
 
+  // Inline success flow (works on free plan, no redirect)
   const form = document.getElementById('signup');
   const email = document.getElementById('email');
   const msg = document.getElementById('msg');
-  document.getElementById('join').addEventListener('click', async () => {
+  const btn = document.getElementById('join');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
     if (!email.checkValidity()) { email.reportValidity(); return; }
     msg.textContent = 'Sending…';
+    btn.disabled = true;
+
     try {
-      const r = await fetch(form.action, { method:'POST', body: new FormData(form), headers:{'Accept':'application/json'}});
-      if (r.ok) { msg.textContent = 'Thanks! You’re on the list.'; form.reset(); }
-      else { msg.textContent = 'Hmm, something went wrong. Try again?'; }
-    } catch { msg.textContent = 'Network error. Please try again.'; }
+      const r = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (r.ok) {
+        // Swap form for branded thank-you message
+        form.innerHTML = `
+          <h3 style="color:#60a5fa;margin:0 0 8px;">Thanks for joining!</h3>
+          <p style="color:#cbd5e1;font-size:1.1rem;margin:0;">The future of connection starts with you.</p>
+        `;
+      } else {
+        msg.textContent = 'Hmm, something went wrong. Try again?';
+        btn.disabled = false;
+      }
+    } catch {
+      msg.textContent = 'Network error. Please try again.';
+      btn.disabled = false;
+    }
   });
 </script>
 </body>
