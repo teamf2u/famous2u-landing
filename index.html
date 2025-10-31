@@ -49,18 +49,21 @@
     .card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02)); border:1px solid var(--border); border-radius:var(--radius); padding:18px; box-shadow:0 10px 30px rgba(0,0,0,.35)}
     .cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
 
-    /* fade animation for mock card */
+    /* hero animations */
     @keyframes fadeSlideIn {
       from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      to   { opacity: 1; transform: translateY(0); }
     }
+    .fade { opacity: 0; animation: fadeSlideIn .9s ease-out forwards; }
+    .delay-1 { animation-delay: .15s; }
+    .delay-2 { animation-delay: .3s; }
+    .delay-3 { animation-delay: .45s; }
+    .delay-4 { animation-delay: .6s; }
+
+    /* mock card animation */
     .mock {
-      min-height:220px;
-      display:grid;
-      gap:12px;
-      opacity:0;
-      animation: fadeSlideIn 1s ease-out forwards;
-      animation-delay: 0.4s;
+      min-height:220px; display:grid; gap:12px;
+      opacity:0; animation: fadeSlideIn 1s ease-out forwards; animation-delay:.4s;
     }
 
     /* features */
@@ -76,6 +79,11 @@
 
     /* footer */
     footer{border-top:1px solid var(--border);color:#8aa0c3;padding:36px 20px;text-align:center}
+
+    /* respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .fade, .mock, .btn:hover { animation: none !important; transform: none !important; }
+    }
 
     @media (max-width: 900px){
       .grid-hero{grid-template-columns:1fr}
@@ -101,12 +109,12 @@
   <section class="hero">
     <div class="container grid-hero">
       <div>
-        <p class="kicker">Connect • Grow • Be Known</p>
-        <h1>Access Fame. Build Connection.</h1>
-        <p class="sub">Famous2U brings fans closer to creators — and gives creators simple tools to deepen relationships and grow influence.</p>
+        <p class="kicker fade">Connect • Grow • Be Known</p>
+        <h1 class="fade delay-1">Access Fame. Build Connection.</h1>
+        <p class="sub fade delay-2">Famous2U brings fans closer to creators — and gives creators simple tools to deepen relationships and grow influence.</p>
 
         <!-- Email signup (live Formspree endpoint) -->
-        <form id="signup" class="card" action="https://formspree.io/f/mgvpnqnb" method="POST" aria-label="Early access">
+        <form id="signup" class="card fade delay-3" action="https://formspree.io/f/mgvpnqnb" method="POST" aria-label="Early access">
           <label for="email" class="muted" style="font-size:14px;">Join the waitlist</label>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
             <input id="email" name="email" type="email" required placeholder="you@example.com"
@@ -116,7 +124,7 @@
           <p id="msg" class="muted" style="font-size:12px;margin:8px 0 0">No spam. Unsubscribe anytime.</p>
         </form>
 
-        <div class="cta-row">
+        <div class="cta-row fade delay-4">
           <a class="btn btn-outline" href="#audiences">See how it works</a>
           <a class="btn btn-primary" href="mailto:teamf2u@proton.me">Contact us</a>
         </div>
