@@ -23,10 +23,22 @@
     .brand{display:flex;align-items:center;gap:10px;font-weight:800}
     .badge{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand2)); box-shadow:0 6px 18px rgba(34,211,238,.35)}
     .links{display:flex;gap:14px;flex-wrap:wrap}
-    .btn{display:inline-flex;align-items:center;gap:8px;border:1px solid transparent;border-radius:10px;padding:10px 14px;font-weight:600}
+
+    /* buttons + glow hover */
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      border:1px solid transparent;border-radius:10px;
+      padding:10px 14px;font-weight:600;
+      transition: all 0.25s ease;
+    }
     .btn-outline{border-color:#263249;background:rgba(255,255,255,.02);color:#cbd5e1}
     .btn-primary{background:var(--brand);color:var(--ink)}
-    .btn:hover{filter:brightness(1.05)}
+    .btn:hover{
+      filter: brightness(1.1);
+      box-shadow: 0 0 8px var(--brand), 0 0 16px rgba(96,165,250,0.4);
+      transform: translateY(-2px);
+    }
+    .btn:active{transform: translateY(-1px)}
 
     /* hero */
     .hero{padding:80px 20px 32px}
@@ -67,9 +79,9 @@
   <div class="container nav">
     <div class="brand"><div class="badge" aria-hidden="true"></div> Famous2U</div>
     <nav class="links" aria-label="Primary">
-      <a class="btn btn-outline" href="#features">Features</a>
-      <a class="btn btn-outline" href="#audiences">For You</a>
-      <a class="btn btn-primary" href="#signup">Join</a>
+      <a class="btn btn-outline" href="#features">Grow Tools</a>
+      <a class="btn btn-outline" href="#audiences">Creators / Fans</a>
+      <a class="btn btn-primary" href="#signup">Claim Your Spot</a>
     </nav>
   </div>
 </header>
