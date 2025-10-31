@@ -57,4 +57,125 @@
     @media (max-width: 900px){
       .grid-hero{grid-template-columns:1fr}
       .grid{grid-template-columns:1fr}
-      .spl
+      .split{grid-template-columns:1fr}
+      header{position:static;background:transparent}
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <div class="brand"><div class="badge" aria-hidden="true"></div> Famous2U</div>
+    <nav class="links" aria-label="Primary">
+      <a class="btn btn-outline" href="#features">Features</a>
+      <a class="btn btn-outline" href="#audiences">For You</a>
+      <a class="btn btn-primary" href="#signup">Join</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="container grid-hero">
+      <div>
+        <p class="kicker">Connect • Grow • Be Known</p>
+        <h1>Access Fame. Build Connection.</h1>
+        <p class="sub">Famous2U brings fans closer to creators — and gives creators simple tools to deepen relationships and grow influence.</p>
+
+        <!-- Email signup (replace YOUR_FORMSPREE_ID) -->
+        <form id="signup" class="card" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" onsubmit="return false" aria-label="Early access">
+          <label for="email" class="muted" style="font-size:14px;">Join the waitlist</label>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+            <input id="email" name="email" type="email" required placeholder="you@example.com"
+              style="flex:1 1 240px;padding:12px 14px;border:1px solid #24304d;border-radius:10px;background:#0b1328;color:#e5e7eb;">
+            <button class="btn btn-primary" id="join">Join the Movement</button>
+          </div>
+          <p id="msg" class="muted" style="font-size:12px;margin:8px 0 0">No spam. Unsubscribe anytime.</p>
+        </form>
+
+        <div class="cta-row">
+          <a class="btn btn-outline" href="#audiences">See how it works</a>
+          <a class="btn btn-primary" href="mailto:teamf2u@proton.me">Contact us</a>
+        </div>
+      </div>
+
+      <div class="card mock" role="img" aria-label="Product preview mockup">
+        <div class="bar" style="width:60%"></div>
+        <div class="bar" style="width:35%"></div>
+        <div class="pill"></div>
+        <div class="bar" style="width:80%"></div>
+        <div class="bar" style="width:45%"></div>
+        <div class="bar" style="width:70%"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="section">
+    <div class="container">
+      <div class="grid">
+        <article class="card">
+          <p class="muted" style="font-size:12px;text-transform:uppercase;letter-spacing:.14em;">Access</p>
+          <h3>Closer than social</h3>
+          <p class="muted">Go beyond comments and likes — get real access and meaningful exchanges.</p>
+        </article>
+        <article class="card">
+          <p class="muted" style="font-size:12px;text-transform:uppercase;letter-spacing:.14em;">Connection</p>
+          <h3>Fans & creators, together</h3>
+          <p class="muted">Built for two sides: fans discover; creators connect and grow.</p>
+        </article>
+        <article class="card">
+          <p class="muted" style="font-size:12px;text-transform:uppercase;letter-spacing:.14em;">Growth</p>
+          <h3>Make fame work for you</h3>
+          <p class="muted">Simple tools to turn attention into momentum — and momentum into success.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="audiences" class="section">
+    <div class="container split">
+      <div class="card">
+        <h3>For Fans</h3>
+        <ul class="list">
+          <li>Get closer to the people you admire.</li>
+          <li>Access Q&As, drops, and moments you can’t find elsewhere.</li>
+          <li>Support your favorites and be part of their journey.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>For Creators</h3>
+        <ul class="list">
+          <li>Own your audience relationships.</li>
+          <li>Simple engagement tools that feel human.</li>
+          <li>Grow your brand and amplify your success.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    © <span id="year"></span> Famous2U — <a href="mailto:teamf2u@proton.me" style="color:#93c5fd">teamf2u@proton.me</a>
+  </div>
+</footer>
+
+<script>
+  // niceties: current year + inline success message (keeps things friendly without autoresponder)
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const form = document.getElementById('signup');
+  const email = document.getElementById('email');
+  const msg = document.getElementById('msg');
+  document.getElementById('join').addEventListener('click', async () => {
+    if (!email.checkValidity()) { email.reportValidity(); return; }
+    msg.textContent = 'Sending…';
+    try {
+      const r = await fetch(form.action, { method:'POST', body: new FormData(form), headers:{'Accept':'application/json'}});
+      if (r.ok) { msg.textContent = 'Thanks! You’re on the list.'; form.reset(); }
+      else { msg.textContent = 'Hmm, something went wrong. Try again?'; }
+    } catch { msg.textContent = 'Network error. Please try again.'; }
+  });
+</script>
+</body>
+</html>
