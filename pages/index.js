@@ -1,187 +1,154 @@
-import { useEffect, useRef } from 'react';
+<!-- Add somewhere in <body> -->
+<canvas id="fireworks"></canvas>
 
-/**
- * Click anywhere to launch fireworks.
- * Lightweight canvas particles, SSR-safe, mobile-friendly.
- */
-export default function Home() {
-  const canvasRef = useRef(null);
+<style>
+  html, body { height: 100%; margin: 0; }
+  #fireworks {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;             /* above hero, below modals if needed */
+    pointer-events: none;      /* doesn't block clicks/links */
+  }
+</style>
 
-  useEffect(() => {
-    // Guard against SSR
-    if (typeof window === 'undefined') return;
+<script>
+(() => {
+  const canvas = document.getElementById('fireworks');
+  const ctx = canvas.getContext('2d', { alpha: true });
 
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+  // Resize & DPR scaling
+  const resize = () => {
+    const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+    canvas.width  = Math.floor(canvas.clientWidth  * dpr);
+    canvas.height = Math.floor(canvas.clientHeight * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  };
+  window.addEventListener('resize', resize);
+  resize();
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+  // Utilities
+  const rand = (min, max) => Math.random() * (max - min) + min;
+  const hsla = (h, s, l, a=1) => `hsla(${h}, ${s}%, ${l}%, ${a})`;
 
-    // Respect "Reduce Motion"
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Particle + Rocket
+  class Particle {
+    constructor(x, y, vx, vy, life, color) {
+      this.x = x; this.y = y;
+      this.vx = vx; this.vy = vy;
+      this.life = life; this.maxLife = life;
+      this.color = color;
+      this.size = rand(1, 2.2);
+    }
+    step(dt) {
+      this.life -= dt;
+      // gravity + drag
+      this.vy += 300 * dt;
+      this.vx *= (1 - 0.6 * dt);
+      this.vy *= (1 - 0.06 * dt);
+      this.x += this.vx * dt;
+      this.y += this.vy * dt;
+    }
+    draw(ctx) {
+      const t = Math.max(this.life / this.maxLife, 0);
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.fillStyle = this.color.replace(/([\d.]+)\)$/, `${0.2 + 0.8 * t})`);
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    alive() { return this.life > 0; }
+  }
 
-    // Size & resize
-    const resize = () => {
-      // Use device pixel ratio for crispness
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const { innerWidth: w, innerHeight: h } = window;
-      canvas.style.width = `${w}px`;
-      canvas.style.height = `${h}px`;
-      canvas.width = Math.floor(w * dpr);
-      canvas.height = Math.floor(h * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
-    resize();
-    window.addEventListener('resize', resize);
-
-    // Particles
-    let particles = [];
-    let rafId = 0;
-
-    const COLORS = ['#ff0059', '#ffb300', '#00c2ff', '#05ff00', '#ff00f2', '#ffd166', '#06d6a0'];
-
-    function spawnFirework(x, y) {
-      const COUNT = 60;
-      for (let i = 0; i < COUNT; i++) {
-        const angle = (Math.PI * 2 * i) / COUNT + Math.random() * 0.3;
-        const speed = 2 + Math.random() * 6;
-        particles.push({
-          x,
-          y,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          r: 1 + Math.random() * 2,
-          life: 1, // 1 → 0
-          color: COLORS[(Math.random() * COLORS.length) | 0],
-          gravity: 0.05 + Math.random() * 0.08,
-          drag: 0.985 + Math.random() * 0.01,
-        });
+  class Rocket {
+    constructor(x, y, targetY, hue) {
+      this.x = x; this.y = y;
+      this.vx = rand(-60, 60);
+      this.vy = -rand(380, 520);
+      this.targetY = targetY;
+      this.hue = hue;
+      this.alive = true;
+    }
+    step(dt) {
+      this.vy += 220 * dt; // gravity
+      this.x += this.vx * dt;
+      this.y += this.vy * dt;
+      if (this.vy >= -80 || this.y <= this.targetY) this.explode();
+    }
+    draw(ctx) {
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.fillStyle = hsla(this.hue, 100, 70, 0.9);
+      ctx.fillRect(this.x - 1.5, this.y - 1.5, 3, 3);
+    }
+    explode() {
+      this.alive = false;
+      const count = Math.floor(rand(60, 100));
+      const burst = [];
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = rand(80, 260);
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed;
+        const sat = Math.floor(rand(70, 100));
+        const light = Math.floor(rand(55, 70));
+        const a = rand(0.7, 1);
+        const color = `hsla(${this.hue + rand(-10, 10)}, ${sat}%, ${light}%, ${a})`;
+        burst.push(new Particle(this.x, this.y, vx, vy, rand(0.8, 1.6), color));
+      }
+      particles.push(...burst);
+      // crackle
+      for (let i = 0; i < 25; i++) {
+        particles.push(new Particle(this.x, this.y, rand(-40, 40), rand(-40, 40), rand(0.3, 0.6), hsla(this.hue, 100, 80, 0.8)));
       }
     }
+  }
 
-    function hexToRgb(hex) {
-      const n = parseInt(hex.slice(1), 16);
-      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  const rockets = [];
+  const particles = [];
+
+  const launch = (x, y) => {
+    const hue = rand(0, 360);
+    const targetY = y ?? rand(canvas.clientHeight * 0.15, canvas.clientHeight * 0.45);
+    rockets.push(new Rocket(x ?? rand(canvas.clientWidth * 0.2, canvas.clientWidth * 0.8), canvas.clientHeight + 10, targetY, hue));
+  };
+
+  // Click to launch
+  window.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    launch(e.clientX - rect.left, e.clientY - rect.top);
+  }, { passive: true });
+
+  // Occasional auto bursts
+  let autoTimer = 0;
+
+  // Animation loop
+  let last = performance.now();
+  const loop = (now) => {
+    const dt = Math.min(0.033, (now - last) / 1000);
+    last = now;
+
+    // fade trail
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = 'rgba(0,0,0,0.2)';
+    ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+
+    // step/draw
+    rockets.forEach(r => { r.step(dt); r.draw(ctx); });
+    for (let i = rockets.length - 1; i >= 0; i--) if (!rockets[i].alive) rockets.splice(i, 1);
+
+    particles.forEach(p => { p.step(dt); p.draw(ctx); });
+    for (let i = particles.length - 1; i >= 0; i--) if (!particles[i].alive()) particles.splice(i, 1);
+
+    // auto-launch every ~0.7–1.6s
+    autoTimer -= dt;
+    if (autoTimer <= 0) {
+      launch();
+      autoTimer = rand(0.7, 1.6);
     }
 
-    function draw() {
-      // fade trail
-      ctx.fillStyle = 'rgba(0,0,0,0.25)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i];
-        // physics
-        p.vx *= p.drag;
-        p.vy = p.vy * p.drag + p.gravity;
-        p.x += p.vx;
-        p.y += p.vy;
-        p.life -= 0.012; // fade out
-
-        // draw
-        const [r, g, b] = hexToRgb(p.color);
-        const alpha = Math.max(p.life, 0);
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
-        ctx.fill();
-
-        // prune
-        if (p.life <= 0) particles.splice(i, 1);
-      }
-
-      rafId = requestAnimationFrame(draw);
-    }
-
-    // Start loop
-    ctx.fillStyle = '#000';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    if (!reduceMotion) {
-      rafId = requestAnimationFrame(draw);
-    }
-
-    // Click/tap handler
-    const onClick = (e) => {
-      // Get click coords relative to canvas CSS size
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      spawnFirework(x, y);
-      // If motion is reduced, render one frame manually
-      if (reduceMotion) {
-        // draw a couple of frames to show the burst
-        for (let i = 0; i < 20; i++) {
-          particles.forEach((p) => {
-            p.vx *= p.drag;
-            p.vy = p.vy * p.drag + p.gravity;
-            p.x += p.vx;
-            p.y += p.vy;
-            p.life -= 0.04;
-          });
-        }
-        // quick draw
-        ctx.fillStyle = 'rgba(0,0,0,0.25)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        particles.forEach((p) => {
-          const [r, g, b] = hexToRgb(p.color);
-          const alpha = Math.max(p.life, 0);
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
-          ctx.fill();
-        });
-        // prune dead
-        particles = particles.filter((p) => p.life > 0);
-      }
-    };
-
-    canvas.addEventListener('click', onClick);
-    canvas.addEventListener('touchstart', (e) => {
-      const t = e.touches[0];
-      if (!t) return;
-      const rect = canvas.getBoundingClientRect();
-      spawnFirework(t.clientX - rect.left, t.clientY - rect.top);
-    });
-
-    // Cleanup
-    return () => {
-      window.removeEventListener('resize', resize);
-      canvas.removeEventListener('click', onClick);
-      cancelAnimationFrame(rafId);
-      particles = [];
-    };
-  }, []);
-
-  const year = new Date().getFullYear();
-
-  return (
-    <main style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden', background: '#000', color: '#fff' }}>
-      <canvas
-        ref={canvasRef}
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' }}
-        aria-hidden="true"
-      />
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          display: 'grid',
-          placeItems: 'center',
-          textAlign: 'center',
-          padding: '2rem',
-          pointerEvents: 'none', // allow clicks to reach canvas
-        }}
-      >
-        <div>
-          <h1 style={{ fontSize: 'clamp(2rem,6vw,4rem)', lineHeight: 1.1 }}>
-            Famous2U: Fame. Access. Connection.
-          </h1>
-          <p style={{ opacity: 0.85, marginTop: '0.75rem' }}>Coming Soon — {year}</p>
-          <p style={{ opacity: 0.6, marginTop: '0.5rem', fontSize: '0.95rem' }}>
-            (Tap/click anywhere for fireworks)
-          </p>
-        </div>
-      </div>
-    </main>
-  );
-}
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+})();
+</script>
