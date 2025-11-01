@@ -1,326 +1,235 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Sparkles, ArrowRight, Star, Play, Zap } from "lucide-react";
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Famous2U</title>
+    <!-- Tailwind (CDN for demo; switch to your build pipeline in prod) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-[#0a0a0f] text-white overflow-x-hidden">
+    <!-- Top gradient frame -->
+    <div class="absolute inset-x-0 -top-40 h-64 blur-3xl opacity-80" aria-hidden="true">
+      <div class="mx-auto h-full max-w-6xl bg-gradient-to-r from-fuchsia-500 via-indigo-500 to-emerald-400 rounded-full"></div>
+    </div>
 
-// --- Data (customized creators with avatars + links) ---
-const creators = [
-  {
-    name: "John Gallagher",
-    handle: "Dying Fetus",
-    metric: "Vocalist / Guitarist",
-    avatar:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/John_Gallagher_Dying_Fetus_2013.jpg/256px-John_Gallagher_Dying_Fetus_2013.jpg",
-    url: "https://en.wikipedia.org/wiki/Dying_Fetus",
-  },
-  {
-    name: "George 'Corpsegrinder' Fisher",
-    handle: "Cannibal Corpse",
-    metric: "Lead Singer",
-    avatar:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/George_Fisher_02.jpg/256px-George_Fisher_02.jpg",
-    url: "https://en.wikipedia.org/wiki/George_Fisher_(musician)",
-  },
-  {
-    name: "Ola Englund",
-    handle: "Solar Guitars",
-    metric: "Founder • YouTuber",
-    avatar:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Ola_Englund_The-Haunted.jpg/256px-Ola_Englund_The-Haunted.jpg",
-    url: "https://en.wikipedia.org/wiki/Ola_Englund",
-  },
-  {
-    name: "Taylor Danley",
-    handle: "YouTuber",
-    metric: "Guitar Creator",
-    avatar:
-      "https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=Taylor+Danley",
-    url: "https://www.youtube.com/c/TaylorDanley",
-  },
-] as const;
-
-// Site-aligned pillars
-const features = [
-  {
-    icon: <Sparkles className="w-5 h-5" />,
-    title: "Closer than social",
-    desc: "Go beyond comments and likes — get real access and meaningful exchanges.",
-  },
-  {
-    icon: <Zap className="w-5 h-5" />,
-    title: "Fans & creators, together",
-    desc: "Built for two sides: fans discover; creators connect and grow.",
-  },
-  {
-    icon: <Star className="w-5 h-5" />,
-    title: "Make fame work for you",
-    desc: "Simple tools to turn attention into momentum — and momentum into success.",
-  },
-];
-
-// --- Utility ---
-const Glow = ({ className = "" }: { className?: string }) => (
-  <div
-    className={`pointer-events-none absolute inset-0 -z-10 [background:radial-gradient(60%_60%_at_50%_0%,rgba(99,102,241,0.35)_0%,rgba(0,0,0,0)_60%),radial-gradient(40%_40%_at_90%_20%,rgba(16,185,129,0.25)_0%,rgba(0,0,0,0)_50%),radial-gradient(30%_30%_at_10%_30%,rgba(236,72,153,0.25)_0%,rgba(0,0,0,0)_45%)] ${className}`}
-  />
-);
-
-// --- Main component ---
-export default function Famous2ULandingNeonCreators() {
-  return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white overflow-hidden">
-      {/* Top gradient frame */}
-      <div className="absolute inset-x-0 -top-40 h-64 blur-3xl opacity-80" aria-hidden>
-        <div className="mx-auto h-full max-w-6xl bg-gradient-to-r from-fuchsia-500 via-indigo-500 to-emerald-400 rounded-full" />
-      </div>
-
-      {/* Nav */}
-      <header className="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-black/30 border-b border-white/10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="size-7 rounded-md bg-gradient-to-br from-fuchsia-500 to-indigo-500 shadow-[0_0_1.5rem_#a78bfa]" />
-            <span className="font-semibold tracking-tight">Famous2U</span>
-          </div>
-          <nav className="hidden md:flex items-center gap-6 text-sm text-white/80">
-            <a href="#tools" className="hover:text-white">Grow Tools</a>
-            <a href="#audiences" className="hover:text-white">Creators / Fans</a>
-            <a href="#join" className="hover:text-white">Claim Your Spot</a>
-          </nav>
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" className="text-white/80 hover:text-white">Sign in</Button>
-            <Button className="bg-white text-black hover:bg-white/90">Get started</Button>
-          </div>
+    <!-- Nav -->
+    <header class="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-black/30 border-b border-white/10">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="size-7 rounded-md bg-gradient-to-br from-fuchsia-500 to-indigo-500 shadow-[0_0_1.5rem_#a78bfa]"></div>
+          <span class="font-semibold tracking-tight">Famous2U</span>
         </div>
-      </header>
+        <nav class="hidden md:flex items-center gap-6 text-sm text-white/80">
+          <a href="#tools" class="hover:text-white">Grow Tools</a>
+          <a href="#audiences" class="hover:text-white">Creators / Fans</a>
+          <a href="#join" class="hover:text-white">Claim Your Spot</a>
+        </nav>
+        <div class="flex items-center gap-3">
+          <button class="px-3 py-2 rounded-md text-white/80 hover:text-white">Sign in</button>
+          <button class="px-3 py-2 rounded-md bg-white text-black hover:bg-white/90">Get started</button>
+        </div>
+      </div>
+    </header>
 
-      {/* Hero */}
-      <section className="relative">
-        <Glow />
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-20">
-          <div className="grid md:grid-cols-2 gap-10 items-center">
-            <div>
-              <div className="text-sm uppercase tracking-widest text-white/60">Connect • Grow • Be Known</div>
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="mt-2 text-4xl sm:text-6xl font-semibold tracking-tight leading-[1.05]"
-              >
-                Access Fame. Build Connection.
-              </motion.h1>
-              <p className="mt-5 text-white/70 max-w-prose">
-                Famous2U brings fans closer to creators — and gives creators simple tools to deepen relationships and grow influence.
-              </p>
+    <!-- Hero -->
+    <section class="relative">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 py-20">
+        <div class="grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <div class="text-sm uppercase tracking-widest text-white/60">Connect • Grow • Be Known</div>
+            <h1 class="mt-2 text-4xl sm:text-6xl font-semibold tracking-tight leading-[1.05]">
+              Access Fame. Build Connection.
+            </h1>
+            <p class="mt-5 text-white/70 max-w-prose">
+              Famous2U brings fans closer to creators — and gives creators simple tools to deepen relationships and grow influence.
+            </p>
 
-              <div className="mt-6 flex w-full max-w-lg items-center gap-3" id="join">
-                <Input placeholder="Work email" className="bg-white/5 border-white/10 placeholder:text-white/40" />
-                <Button className="bg-gradient-to-r from-fuchsia-500 via-indigo-500 to-emerald-400 hover:opacity-90 shadow-[0_0_2rem_rgba(168,85,247,0.5)]">
-                  Join the waitlist <ArrowRight className="ml-1 w-4 h-4" />
-                </Button>
-              </div>
-              <div className="mt-2 text-xs text-white/50">No spam. Unsubscribe anytime.</div>
-
-              <div className="mt-6 flex items-center gap-4 text-white/60 text-sm">
-                <Button variant="secondary" className="bg-white/10 text-white border-white/20 hover:bg-white/20">
-                  See how it works
-                </Button>
-                <a href="#contact" className="hover:text-white">Contact us</a>
-              </div>
+            <div class="mt-6 flex w-full max-w-lg items-center gap-3" id="join">
+              <input placeholder="Work email" class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-md placeholder:text-white/40" />
+              <a href="#" class="px-4 py-2 rounded-md bg-gradient-to-r from-fuchsia-500 via-indigo-500 to-emerald-400 hover:opacity-90 shadow-[0_0_2rem_rgba(168,85,247,0.5)] inline-flex items-center">
+                Join the waitlist
+                <span class="ml-1">→</span>
+              </a>
             </div>
+            <div class="mt-2 text-xs text-white/50">No spam. Unsubscribe anytime.</div>
 
-            {/* Hero visual */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7 }}
-              className="relative"
-            >
-              <div className="relative rounded-2xl p-1 bg-gradient-to-br from-fuchsia-600/60 via-indigo-600/40 to-emerald-600/60 shadow-[0_0_3rem_rgba(79,70,229,0.4)]">
-                <div className="rounded-2xl bg-[#0c0c14] border border-white/10 p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="size-2.5 rounded-full bg-emerald-400/90" />
-                      <span className="text-xs text-white/60">Creators</span>
+            <div class="mt-6 flex items-center gap-4 text-white/60 text-sm">
+              <a href="#" class="px-3 py-2 rounded-md bg-white/10 border border-white/20 hover:bg-white/20">See how it works</a>
+              <a href="#contact" class="hover:text-white">Contact us</a>
+            </div>
+          </div>
+
+          <!-- Creators panel -->
+          <div class="relative">
+            <div class="relative rounded-2xl p-1 bg-gradient-to-br from-fuchsia-600/60 via-indigo-600/40 to-emerald-600/60 shadow-[0_0_3rem_rgba(79,70,229,0.4)]">
+              <div class="rounded-2xl bg-[#0c0c14] border border-white/10 p-6">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="size-2.5 rounded-full bg-emerald-400/90"></div>
+                    <span class="text-xs text-white/60">Creators</span>
+                  </div>
+                  <a href="#" class="px-3 py-2 rounded-md bg-white/10 border border-white/20 hover:bg-white/20">Demo</a>
+                </div>
+
+                <div class="mt-6 grid grid-cols-3 gap-3">
+                  <!-- John Gallagher -->
+                  <div class="rounded-xl bg-white/5 border border-white/10 p-4">
+                    <div class="flex items-center gap-2 text-base font-medium">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/John_Gallagher_Dying_Fetus_2013.jpg/256px-John_Gallagher_Dying_Fetus_2013.jpg" alt="John Gallagher" class="w-8 h-8 rounded-full object-cover" />
+                      John Gallagher
                     </div>
-                    <Button variant="secondary" className="bg-white/10 text-white border-white/20 hover:bg-white/20">
-                      <Play className="mr-2 w-4 h-4" /> Demo
-                    </Button>
+                    <div class="pt-2 text-sm text-white/70">
+                      <div>Dying Fetus</div>
+                      <div class="text-white/50">Vocalist / Guitarist</div>
+                      <a target="_blank" rel="noreferrer" href="https://en.wikipedia.org/wiki/Dying_Fetus" class="mt-3 inline-block w-full text-center px-3 py-2 rounded-md bg-white text-black hover:bg-white/90">View</a>
+                    </div>
                   </div>
 
-                  <div className="mt-6 grid grid-cols-3 gap-3">
-                    {creators.map((c, idx) => (
-                      <Card key={idx} className="bg-white/5 border-white/10 hover:shadow-[0_0_1.5rem_rgba(168,85,247,0.35)] transition">
-                        <CardHeader className="pb-2">
-                          <CardTitle className="text-base flex items-center gap-2">
-                            <img
-                              src={c.avatar}
-                              alt={c.name}
-                              className="size-8 rounded-full object-cover"
-                              referrerPolicy="no-referrer"
-                              loading="lazy"
-                            />
-                            {c.name}
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent className="pt-0 text-sm text-white/70">
-                          <div>{c.handle}</div>
-                          <div className="text-white/50">{c.metric}</div>
-                          <Button size="sm" className="mt-3 w-full bg-white text-black hover:bg-white/90" asChild>
-                            <a href={c.url} target="_blank" rel="noreferrer">View</a>
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    ))}
+                  <!-- Corpsegrinder -->
+                  <div class="rounded-xl bg-white/5 border border-white/10 p-4">
+                    <div class="flex items-center gap-2 text-base font-medium">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/George_Fisher_02.jpg/256px-George_Fisher_02.jpg" alt="George 'Corpsegrinder' Fisher" class="w-8 h-8 rounded-full object-cover" />
+                      George “Corpsegrinder” Fisher
+                    </div>
+                    <div class="pt-2 text-sm text-white/70">
+                      <div>Cannibal Corpse</div>
+                      <div class="text-white/50">Lead Singer</div>
+                      <a target="_blank" rel="noreferrer" href="https://en.wikipedia.org/wiki/George_Fisher_(musician)" class="mt-3 inline-block w-full text-center px-3 py-2 rounded-md bg-white text-black hover:bg-white/90">View</a>
+                    </div>
+                  </div>
+
+                  <!-- Ola Englund -->
+                  <div class="rounded-xl bg-white/5 border border-white/10 p-4">
+                    <div class="flex items-center gap-2 text-base font-medium">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Ola_Englund_The-Haunted.jpg/256px-Ola_Englund_The-Haunted.jpg" alt="Ola Englund" class="w-8 h-8 rounded-full object-cover" />
+                      Ola Englund
+                    </div>
+                    <div class="pt-2 text-sm text-white/70">
+                      <div>Solar Guitars</div>
+                      <div class="text-white/50">Founder • YouTuber</div>
+                      <a target="_blank" rel="noreferrer" href="https://en.wikipedia.org/wiki/Ola_Englund" class="mt-3 inline-block w-full text-center px-3 py-2 rounded-md bg-white text-black hover:bg-white/90">View</a>
+                    </div>
+                  </div>
+
+                  <!-- Taylor Danley -->
+                  <div class="rounded-xl bg-white/5 border border-white/10 p-4">
+                    <div class="flex items-center gap-2 text-base font-medium">
+                      <img src="https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=Taylor+Danley" alt="Taylor Danley" class="w-8 h-8 rounded-full object-cover" />
+                      Taylor Danley
+                    </div>
+                    <div class="pt-2 text-sm text-white/70">
+                      <div>YouTuber</div>
+                      <div class="text-white/50">Guitar Creator</div>
+                      <a target="_blank" rel="noreferrer" href="https://www.youtube.com/c/TaylorDanley" class="mt-3 inline-block w-full text-center px-3 py-2 rounded-md bg-white text-black hover:bg-white/90">View</a>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="absolute -bottom-6 -right-6 size-28 rounded-full blur-2xl bg-fuchsia-500/40" />
-              <div className="absolute -top-6 -left-10 size-32 rounded-full blur-2xl bg-emerald-400/40" />
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Logos */}
-      <section className="py-10 border-y border-white/10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-white/50 text-sm">
-          <span>Trusted by teams at</span>{" "}
-          {["Pulse", "Orbital", "Nimbus", "Glide", "Vertex"].map((l) => (
-            <span key={l} className="tracking-wider">{l}</span>
-          ))}
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section id="tools" className="relative py-20">
-        <Glow className="opacity-60" />
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="text-center max-w-2xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-semibold">How It Works</h2>
-            <p className="mt-3 text-white/70">Your connection starts here.</p>
-          </div>
-
-          <div className="mt-12 grid md:grid-cols-3 gap-6">
-            {features.map((f, i) => (
-              <Card key={i} className="bg-white/5 border-white/10">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <span className="inline-flex items-center justify-center size-8 rounded-lg bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-white shadow-[0_0_1rem_rgba(99,102,241,0.5)]">
-                      {f.icon}
-                    </span>
-                    {f.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-white/70">{f.desc}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Audiences */}
-      <section id="audiences" className="py-16 border-y border-white/10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="grid md:grid-cols-2 gap-8">
-            <Card className="bg-white/5 border-white/10">
-              <CardHeader>
-                <CardTitle>For Fans</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-white/80 list-disc list-inside">
-                  <li>Get closer to the people you admire.</li>
-                  <li>Access Q&As, drops, and moments you can’t find elsewhere.</li>
-                  <li>Support your favorites and be part of their journey.</li>
-                </ul>
-              </CardContent>
-            </Card>
-            <Card className="bg-white/5 border-white/10">
-              <CardHeader>
-                <CardTitle>For Creators</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-white/80 list-disc list-inside">
-                  <li>Own your audience relationships.</li>
-                  <li>Simple engagement tools that feel human.</li>
-                  <li>Grow your brand and amplify your success.</li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section id="faq" className="py-16 border-t border-white/10">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6">
-          <h3 className="text-2xl font-semibold">FAQs</h3>
-          <div className="mt-6 grid sm:grid-cols-2 gap-6">
-            {[
-              { q: "How do bookings work?", a: "Send a brief, receive availability and rates, and confirm in a click. We auto-generate contracts and invoices." },
-              { q: "Is Famous2U brand-safe?", a: "Yes. All creators are verified and continuously screened by our trust & safety systems." },
-              { q: "Do you support agencies?", a: "Absolutely—multi-workspace, approvals, and exports are included on Teams." },
-              { q: "Which platforms are covered?", a: "Instagram, TikTok, YouTube, Twitch, and more. Custom requests welcome." },
-            ].map((f, i) => (
-              <div key={i} className="rounded-xl border border-white/10 p-5 bg-white/5">
-                <div className="font-medium">{f.q}</div>
-                <div className="mt-2 text-white/70">{f.a}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-16">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 text-center">
-          <h3 className="text-3xl font-semibold">Ready to glow?</h3>
-          <p className="mt-3 text-white/70">Create your first brief and get matched in minutes.</p>
-          <div className="mt-6 flex justify-center gap-3">
-            <Button className="bg-gradient-to-r from-fuchsia-500 via-indigo-500 to-emerald-400 hover:opacity-90">Create free account</Button>
-            <Button variant="secondary" className="bg-white/10 text-white border-white/20 hover:bg-white/20">Talk to sales</Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t border-white/10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10 grid md:grid-cols-4 gap-8 text-sm text-white/60">
-          <div>
-            <div className="flex items-center gap-2">
-              <div className="size-7 rounded-md bg-gradient-to-br from-fuchsia-500 to-indigo-500" />
-              <span className="font-medium text-white">Famous2U</span>
             </div>
-            <p className="mt-3">Access Fame. Build Connection.</p>
+            <div class="absolute -bottom-6 -right-6 size-28 rounded-full blur-2xl bg-fuchsia-500/40"></div>
+            <div class="absolute -top-6 -left-10 size-32 rounded-full blur-2xl bg-emerald-400/40"></div>
           </div>
-          <div>
-            <div className="text-white font-medium">Product</div>
-            <ul className="mt-2 space-y-2">
-              <li><a href="#tools" className="hover:text-white">Grow Tools</a></li>
-              <li><a href="#audiences" className="hover:text-white">Creators / Fans</a></li>
-              <li><a href="#faq" className="hover:text-white">FAQ</a></li>
+        </div>
+      </section>
+
+      <!-- Logos -->
+      <section class="py-10 border-y border-white/10">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-white/50 text-sm">
+          <span>Trusted by teams at</span>
+          <span class="tracking-wider">Pulse</span>
+          <span class="tracking-wider">Orbital</span>
+          <span class="tracking-wider">Nimbus</span>
+          <span class="tracking-wider">Glide</span>
+          <span class="tracking-wider">Vertex</span>
+        </div>
+      </section>
+
+      <!-- How It Works -->
+      <section id="tools" class="relative py-20">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6">
+          <div class="text-center max-w-2xl mx-auto">
+            <h2 class="text-3xl sm:text-4xl font-semibold">How It Works</h2>
+            <p class="mt-3 text-white/70">Your connection starts here.</p>
+          </div>
+
+          <div class="mt-12 grid md:grid-cols-3 gap-6">
+            <div class="bg-white/5 border border-white/10 rounded-xl p-5">
+              <div class="flex items-center gap-2 font-medium"><span>✨</span>Closer than social</div>
+              <p class="mt-2 text-white/70">Go beyond comments and likes — get real access and meaningful exchanges.</p>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-xl p-5">
+              <div class="flex items-center gap-2 font-medium"><span>⚡</span>Fans & creators, together</div>
+              <p class="mt-2 text-white/70">Built for two sides: fans discover; creators connect and grow.</p>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-xl p-5">
+              <div class="flex items-center gap-2 font-medium"><span>★</span>Make fame work for you</div>
+              <p class="mt-2 text-white/70">Simple tools to turn attention into momentum — and momentum into success.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Audiences -->
+      <section id="audiences" class="py-16 border-y border-white/10">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 grid md:grid-cols-2 gap-8">
+          <div class="bg-white/5 border border-white/10 rounded-xl p-5">
+            <div class="font-medium">For Fans</div>
+            <ul class="mt-3 space-y-2 text-white/80 list-disc list-inside">
+              <li>Get closer to the people you admire.</li>
+              <li>Access Q&As, drops, and moments you can’t find elsewhere.</li>
+              <li>Support your favorites and be part of their journey.</li>
             </ul>
           </div>
-          <div>
-            <div className="text-white font-medium">Company</div>
-            <ul className="mt-2 space-y-2">
-              <li><a href="#" className="hover:text-white">About</a></li>
-              <li><a href="#" className="hover:text-white">Careers</a></li>
-              <li><a href="#" className="hover:text-white">Press</a></li>
-            </ul>
-          </div>
-          <div>
-            <div className="text-white font-medium">Contact</div>
-            <ul className="mt-2 space-y-2">
-              <li><a href="mailto:teamf2u@proton.me" className="hover:text-white underline">teamf2u@proton.me</a></li>
+          <div class="bg-white/5 border border-white/10 rounded-xl p-5">
+            <div class="font-medium">For Creators</div>
+            <ul class="mt-3 space-y-2 text-white/80 list-disc list-inside">
+              <li>Own your audience relationships.</li>
+              <li>Simple engagement tools that feel human.</li>
+              <li>Grow your brand and amplify your success.</li>
             </ul>
           </div>
         </div>
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-8 text-xs text-white/40">© {new Date().getFullYear()} Famous2U</div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="border-t border-white/10">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 py-10 grid md:grid-cols-4 gap-8 text-sm text-white/60">
+          <div>
+            <div class="flex items-center gap-2">
+              <div class="size-7 rounded-md bg-gradient-to-br from-fuchsia-500 to-indigo-500"></div>
+              <span class="font-medium text-white">Famous2U</span>
+            </div>
+            <p class="mt-3">Access Fame. Build Connection.</p>
+          </div>
+          <div>
+            <div class="text-white font-medium">Product</div>
+            <ul class="mt-2 space-y-2">
+              <li><a href="#tools" class="hover:text-white">Grow Tools</a></li>
+              <li><a href="#audiences" class="hover:text-white">Creators / Fans</a></li>
+              <li><a href="#faq" class="hover:text-white">FAQ</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-white font-medium">Company</div>
+            <ul class="mt-2 space-y-2">
+              <li><a href="#" class="hover:text-white">About</a></li>
+              <li><a href="#" class="hover:text-white">Careers</a></li>
+              <li><a href="#" class="hover:text-white">Press</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-white font-medium">Contact</div>
+            <ul class="mt-2 space-y-2">
+              <li><a href="mailto:teamf2u@proton.me" class="hover:text-white underline">teamf2u@proton.me</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 pb-8 text-xs text-white/40">© <span id="year"></span> Famous2U</div>
       </footer>
-    </div>
-  );
-}
+
+      <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+      </script>
+    </body>
+</html>
